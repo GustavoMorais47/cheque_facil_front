@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 5.4.0"
+  },
+  "build": {
+    "desenvolvimento": {
+      "channel": "desenvolvimento",
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "channel": "preview",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "producao-leonardo": {
+      "channel": "producao-leonardo",
+      "node": "18.18.0",
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}

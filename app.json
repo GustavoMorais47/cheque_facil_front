@@ -1,0 +1,74 @@
+{
+  "expo": {
+    "name": "Cheque Fácil",
+    "slug": "cheque_facil",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": [
+      "chequefacil"
+    ],
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png"
+        }
+      ],
+      [
+        "expo-updates",
+        {
+          "username": "gustavomorais",
+          "channel": "producao"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "8dd6a07c-8d85-4b36-a059-c61b5c3c8adc"
+      }
+    },
+    "android": {
+      "package": "com.gustavomorais.cheque_facil",
+      "googleServicesFile": "./google-services.json"
+    },
+    "ios": {
+      "bundleIdentifier": "com.gustavomorais.chequefacil"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8dd6a07c-8d85-4b36-a059-c61b5c3c8adc"
+    }
+  },
+  "splash": {
+    "image": "./assets/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#ffffff"
+  },
+  "assetBundlePatterns": [
+    "**/*"
+  ],
+  "ios": {
+    "supportsTablet": true
+  },
+  "android": {
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#ffffff"
+    }
+  },
+  "web": {
+    "favicon": "./assets/favicon.png"
+  }
+}
