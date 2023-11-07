@@ -20,7 +20,7 @@ export default function GerenciarBancosCriarEditar() {
   const { params } =
     useRoute<RouteProp<OpcoesRoutesList, "GerenciarBancosAddEdit">>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, getBancos } = useContext(DadosContext);
+  const { getBancos } = useContext(DadosContext);
 
   const [codigo, setCodigo] = useState<string>("");
   const [nome, setNome] = useState<string>("");
@@ -43,7 +43,6 @@ export default function GerenciarBancosCriarEditar() {
           nome,
         },
         props: {
-          expotoken,
           setToken,
           setUsuario,
         },
@@ -85,17 +84,6 @@ export default function GerenciarBancosCriarEditar() {
       return;
     }
 
-    if (!expotoken) {
-      showMessage({
-        type: "warning",
-        icon: "warning",
-        message: "Atenção",
-        description:
-          "Não foi possível identificar o token do dispositivo. Aguade alguns segundos e tente novamente",
-      });
-      return;
-    }
-
     setLoading(true);
     params.banco &&
       (await services
@@ -113,7 +101,6 @@ export default function GerenciarBancosCriarEditar() {
             codigo,
           },
           props: {
-            expotoken,
             setToken,
             setUsuario,
           },

@@ -120,7 +120,6 @@ function PermissoesButton({
 
 export default function Opcoes() {
   const navigation = useNavigation<NavigationProp<OpcoesRoutesList>>();
-  const [expoPushToken, setExpoPushToken] = useState<string | undefined>();
   const { setToken, setUsuario, usuario } = useContext(AuthContext);
   const sair = async () => {
     Alert.alert(
@@ -136,8 +135,8 @@ export default function Opcoes() {
           onPress: async () => {
             await services
               .get({
-                route: "logout",
-                props: { setToken, setUsuario, expotoken: expoPushToken },
+                route: "/logout",
+                props: { setToken, setUsuario },
               })
               .then(async () => {
                 try {
@@ -167,14 +166,6 @@ export default function Opcoes() {
       { cancelable: false }
     );
   };
-
-  const setExpoToken = async () => {
-    setExpoPushToken(await useExpoToken());
-  };
-
-  useEffect(() => {
-    setExpoToken();
-  }, []);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView

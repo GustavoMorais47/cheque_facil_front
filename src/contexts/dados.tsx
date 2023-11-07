@@ -9,15 +9,11 @@ import {
 import services from "../services";
 import { AuthContext } from "./auth";
 import { showMessage } from "react-native-flash-message";
-import useExpoToken from "../hooks/useExpoToken";
-import * as Notifications from "expo-notifications";
 import moment from "moment";
 import permissao from "../utils/permissao";
 import { EPermissaoAcesso } from "../types/enum";
 
 type DadosContextType = {
-  expotoken: string | undefined;
-  notificacoes: Notifications.Notification[] | undefined;
   acessos: IAcesso[];
   getAcessos: () => Promise<void>;
   responsaveis: IResponsavel[];
@@ -50,10 +46,6 @@ export default function DadosProvider({
   children?: React.ReactNode;
 }) {
   const { setToken, setUsuario, usuario } = useContext(AuthContext);
-  const [expotoken, setExpoToken] = useState<string | undefined>();
-  const [notificacoes, setNotificacoes] = useState<
-    Notifications.Notification[] | undefined
-  >();
   const [acessos, setAcessos] = useState<IAcesso[]>([]);
   const [responsaveis, setResponsaveis] = useState<IResponsavel[]>([]);
   const [bancos, setBancos] = useState<IBanco[]>([]);
@@ -75,7 +67,6 @@ export default function DadosProvider({
         props: {
           setToken,
           setUsuario,
-          expotoken,
         },
       })
       .then((response) => {
@@ -99,7 +90,6 @@ export default function DadosProvider({
         props: {
           setToken,
           setUsuario,
-          expotoken,
         },
       })
       .then((response) => {
@@ -123,7 +113,6 @@ export default function DadosProvider({
         props: {
           setToken,
           setUsuario,
-          expotoken,
         },
       })
       .then((response) => {
@@ -147,7 +136,6 @@ export default function DadosProvider({
         props: {
           setToken,
           setUsuario,
-          expotoken,
         },
       })
       .then((res) => {
@@ -178,7 +166,6 @@ export default function DadosProvider({
         props: {
           setToken,
           setUsuario,
-          expotoken,
         },
         params: {
           inicio: datas.inicio,
@@ -202,24 +189,23 @@ export default function DadosProvider({
 
   useEffect(() => {
     (async () => {
-      setExpoToken(await useExpoToken());
+      // setExpoToken(await useExpoToken());
     })();
   }, []);
 
   useEffect(() => {
-    if (expotoken) {
-      getResponsaveis();
-      getBancos();
-      getContasBancarias();
-      permissao.todasPermissoes([EPermissaoAcesso.GERENCIAR_ACESSOS], usuario!.permissoes)&&getAcessos();
-      getCheques();
-    }
-  }, [expotoken, datas, filtro]);
+    getResponsaveis();
+    getBancos();
+    getContasBancarias();
+    permissao.todasPermissoes(
+      [EPermissaoAcesso.GERENCIAR_ACESSOS],
+      usuario!.permissoes
+    ) && getAcessos();
+    getCheques();
+  }, [datas, filtro]);
   return (
     <DadosContext.Provider
       value={{
-        expotoken,
-        notificacoes,
         acessos,
         getAcessos,
         responsaveis,

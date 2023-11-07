@@ -21,7 +21,6 @@ function Item({
   item,
   bancos,
   getContasBancarias,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -30,7 +29,6 @@ function Item({
   item: IContaBancaria;
   bancos: IBanco[];
   getContasBancarias: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,7 +59,6 @@ function Item({
                               props: {
                                 setToken,
                                 setUsuario,
-                                expotoken,
                               },
                             })
                             .then(async (response) => {
@@ -150,7 +147,6 @@ const renderItem = ({
   item,
   bancos,
   getContasBancarias,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -159,7 +155,6 @@ const renderItem = ({
   item: IContaBancaria;
   bancos: IBanco[];
   getContasBancarias: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -169,7 +164,6 @@ const renderItem = ({
     item={item}
     bancos={bancos}
     getContasBancarias={getContasBancarias}
-    expotoken={expotoken}
     setToken={setToken}
     setUsuario={setUsuario}
     setLoading={setLoading}
@@ -180,7 +174,7 @@ const renderItem = ({
 export default function GerenciarContaBancaria() {
   const navigation = useNavigation<NavigationProp<OpcoesRoutesList>>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, contas, bancos, getContasBancarias } = useContext(DadosContext);
+  const { contas, bancos, getContasBancarias } = useContext(DadosContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function atualizar() {
@@ -213,7 +207,6 @@ export default function GerenciarContaBancaria() {
             item,
             bancos,
             getContasBancarias: atualizar,
-            expotoken,
             setToken,
             setUsuario,
             setLoading,

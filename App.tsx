@@ -5,10 +5,8 @@ import AuthProvider from "./src/contexts/auth";
 import { StatusBar } from "expo-status-bar";
 import * as Linking from "expo-linking";
 import { ActivityIndicator, Alert, View } from "react-native";
-import * as Notifications from "expo-notifications";
 import * as Updates from "expo-updates";
 import { useEffect } from "react";
-import useExpoToken from "./src/hooks/useExpoToken";
 
 const prefix = Linking.createURL("/");
 
@@ -35,14 +33,6 @@ const linking = {
   prefixes: [prefix],
   config,
 };
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
 
 export default function App() {
   async function onFetchUpdateAsync() {
@@ -80,13 +70,6 @@ export default function App() {
 
   useEffect(() => {
     onFetchUpdateAsync();
-    useExpoToken().catch((error) => {
-      Alert.alert(
-        "Não foi possível obter o token",
-        "Tente novamente mais tarde ou entre em contato com o suporte. Erro: " +
-          error
-      );
-    });
   }, []);
   return (
     <NavigationContainer

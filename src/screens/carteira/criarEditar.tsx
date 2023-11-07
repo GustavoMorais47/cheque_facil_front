@@ -50,7 +50,7 @@ export default function CarteiraCriarEditar() {
   const { params } =
     useRoute<RouteProp<CarteiraRoutesList, "CarteiraAddEdit">>();
   const { setToken, setUsuario, usuario } = useContext(AuthContext);
-  const { contas, bancos, responsaveis, expotoken, getCheques } =
+  const { contas, bancos, responsaveis, getCheques } =
     useContext(DadosContext);
 
   const [conta, setConta] = useState<IContaBancaria | null>(
@@ -90,6 +90,9 @@ export default function CarteiraCriarEditar() {
   );
   const [status, setStatus] = useState<EStatusCheque | null>(
     params.cheque?.status || null
+  );
+  const [motivo, setMotivo] = useState<string>(
+    params.cheque?.motivo_devolucao || ""
   );
   const [editar, setEditar] = useState<boolean>(params.cheque ? false : true);
   const [loading, setLoading] = useState<boolean>(false);
@@ -137,13 +140,12 @@ export default function CarteiraCriarEditar() {
         description: "Selecione o status do cheque",
       });
 
-    if (!expotoken)
+    if (status === EStatusCheque.DEVOLVIDO && motivo.trim().length === 0)
       return showMessage({
         type: "warning",
         icon: "warning",
         message: "Atenção!",
-        description:
-          "Não foi possivel obter o token de validação do app. Tente novamente mais tarde ou reinicie o app.",
+        description: "Informe o motivo da devolução",
       });
 
     setLoading(true);
@@ -162,6 +164,7 @@ export default function CarteiraCriarEditar() {
           destinatario: string | null;
           descricao: string | null;
           status: EStatusCheque; //obrigatório
+          motivo_devolucao: string | null;
         }
       >({
         route: "cheque/",
@@ -177,11 +180,11 @@ export default function CarteiraCriarEditar() {
           destinatario: destinatario.trim().length > 0 ? destinatario : null,
           descricao: descricao.trim().length > 0 ? descricao : null,
           status,
+          motivo_devolucao: status === EStatusCheque.DEVOLVIDO ? motivo : null,
         },
         props: {
           setToken,
           setUsuario,
-          expotoken,
         },
       })
       .then(async (res) => {
@@ -237,13 +240,12 @@ export default function CarteiraCriarEditar() {
         description: "Selecione o status do cheque",
       });
 
-    if (!expotoken)
+    if (status === EStatusCheque.DEVOLVIDO && motivo.trim().length === 0)
       return showMessage({
         type: "warning",
         icon: "warning",
         message: "Atenção!",
-        description:
-          "Não foi possivel obter o token de validação do app. Tente novamente mais tarde ou reinicie o app.",
+        description: "Informe o motivo da devolução",
       });
 
     setLoading(true);
@@ -261,6 +263,7 @@ export default function CarteiraCriarEditar() {
           destinatario: string | null;
           descricao: string | null;
           status: EStatusCheque; //obrigatório
+          motivo_devolucao: string | null;
         }
       >({
         route: "cheque/",
@@ -276,9 +279,9 @@ export default function CarteiraCriarEditar() {
           destinatario: destinatario.trim().length > 0 ? destinatario : null,
           descricao: descricao.trim().length > 0 ? descricao : null,
           status,
+          motivo_devolucao: status === EStatusCheque.DEVOLVIDO ? motivo : null,
         },
         props: {
-          expotoken,
           setToken,
           setUsuario,
         },
@@ -519,6 +522,16 @@ export default function CarteiraCriarEditar() {
           selecionado={statusCheque.findIndex((stt) => stt.value === status)}
           setSelecionado={(_, value) => setStatus(value as EStatusCheque)}
         />
+        {status === EStatusCheque.DEVOLVIDO && (
+          <Input
+            disabled={!editar || loading}
+            title="Motivo"
+            text={motivo}
+            onChangeText={setMotivo}
+            placeholder="Motivo da devolução"
+            maxLength={250}
+          />
+        )}
       </Card>
       {editar && (
         <Card titulo="Permanecer" subTitulo="Permanecer na tela após salvar">
@@ -560,7 +573,13 @@ export default function CarteiraCriarEditar() {
       <Button
         disabled={loading}
         titulo="Cancelar"
-        onPress={params.cheque ? editar ? ()=>setEditar(false) : navigation.goBack : navigation.goBack}
+        onPress={
+          params.cheque
+            ? editar
+              ? () => setEditar(false)
+              : navigation.goBack
+            : navigation.goBack
+        }
         type="secondary"
       />
     </ScrollView>

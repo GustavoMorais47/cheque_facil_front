@@ -20,7 +20,6 @@ import { OpcoesRoutesList } from "../../../routes/opcoes.routes";
 function Item({
   item,
   getBancos,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -28,7 +27,6 @@ function Item({
 }: {
   item: IBanco;
   getBancos: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,7 +57,6 @@ function Item({
                               props: {
                                 setToken,
                                 setUsuario,
-                                expotoken,
                               },
                             })
                             .then(async (response) => {
@@ -135,7 +132,6 @@ function Item({
 const renderItem = ({
   item,
   getBancos,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -143,7 +139,6 @@ const renderItem = ({
 }: {
   item: IBanco;
   getBancos: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -152,7 +147,6 @@ const renderItem = ({
   <Item
     item={item}
     getBancos={getBancos}
-    expotoken={expotoken}
     setToken={setToken}
     setUsuario={setUsuario}
     setLoading={setLoading}
@@ -163,7 +157,7 @@ const renderItem = ({
 export default function GerenciarBancos() {
   const navigation = useNavigation<NavigationProp<OpcoesRoutesList>>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, bancos, getBancos } = useContext(DadosContext);
+  const { bancos, getBancos } = useContext(DadosContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function atualizar() {
@@ -195,7 +189,6 @@ export default function GerenciarBancos() {
           renderItem({
             item,
             getBancos: atualizar,
-            expotoken,
             setToken,
             setUsuario,
             setLoading,

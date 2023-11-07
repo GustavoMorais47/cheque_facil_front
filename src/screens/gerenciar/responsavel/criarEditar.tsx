@@ -21,7 +21,7 @@ export default function GerenciarResponsaveisCriarEditar() {
   const { params } =
     useRoute<RouteProp<OpcoesRoutesList, "GerenciarResponsaveisAddEdit">>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, getResponsaveis } = useContext(DadosContext);
+  const { getResponsaveis } = useContext(DadosContext);
 
   const [nome, setNome] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -65,7 +65,6 @@ export default function GerenciarResponsaveisCriarEditar() {
           email,
         },
         props: {
-          expotoken,
           setToken,
           setUsuario,
         },
@@ -117,18 +116,7 @@ export default function GerenciarResponsaveisCriarEditar() {
       });
       return;
     }
-
-    if (!expotoken) {
-      showMessage({
-        type: "warning",
-        icon: "warning",
-        message: "Atenção",
-        description:
-          "Não foi possível identificar o token do dispositivo. Aguade alguns segundos e tente novamente",
-      });
-      return;
-    }
-
+    
     setLoading(true);
     params.responsavel &&
       (await services
@@ -149,7 +137,6 @@ export default function GerenciarResponsaveisCriarEditar() {
             status,
           },
           props: {
-            expotoken,
             setToken,
             setUsuario,
           },

@@ -44,7 +44,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (cheques.length > 0) {
-      if (moment(datas.inicio).isSame(datas.fim, "week")) {
+      if (moment(datas.inicio).isSame(datas.fim, "day")) {
+        setData(null)
+      }
+      else if (moment(datas.inicio).isSame(datas.fim, "week")) {
         const dias: string[] = [
           "domingo",
           "segunda",
@@ -277,6 +280,7 @@ export default function Dashboard() {
               })
             }
             bezier
+            verticalLabelRotation={30}
           />
         </Card>
       )}

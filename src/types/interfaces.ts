@@ -65,6 +65,7 @@ export interface ICheque {
   destinatario: string | null;
   descricao: string | null;
   status: EStatusCheque;
+  motivo_devolucao: string | null;
   criado_por: number;
 }
 

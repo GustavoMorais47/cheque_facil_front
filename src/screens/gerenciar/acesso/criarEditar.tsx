@@ -23,7 +23,7 @@ export default function GerenciarAcessosCriarEditar() {
   const { params } =
     useRoute<RouteProp<OpcoesRoutesList, "GerenciarAcessosAddEdit">>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { responsaveis, expotoken, getAcessos } = useContext(DadosContext);
+  const { responsaveis, getAcessos } = useContext(DadosContext);
 
   const [nome, setNome] = useState<string>("");
   const [cpf, setCpf] = useState<string>("");
@@ -87,7 +87,6 @@ export default function GerenciarAcessosCriarEditar() {
           id_responsavel: responsavel ? responsavel.id : undefined,
         },
         props: {
-          expotoken,
           setToken,
           setUsuario,
         },
@@ -146,17 +145,6 @@ export default function GerenciarAcessosCriarEditar() {
       return;
     }
 
-    if (!expotoken) {
-      showMessage({
-        type: "warning",
-        icon: "warning",
-        message: "Atenção",
-        description:
-          "Não foi possível identificar o token do dispositivo. Aguade alguns segundos e tente novamente",
-      });
-      return;
-    }
-
     setLoading(true);
     params.acesso &&
       (await services
@@ -178,7 +166,6 @@ export default function GerenciarAcessosCriarEditar() {
             id_responsavel: responsavel ? responsavel.id : undefined,
           },
           props: {
-            expotoken,
             setToken,
             setUsuario,
           },

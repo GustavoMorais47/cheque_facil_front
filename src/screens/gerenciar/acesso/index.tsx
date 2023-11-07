@@ -20,7 +20,6 @@ import { OpcoesRoutesList } from "../../../routes/opcoes.routes";
 function Item({
   item,
   getAcessos,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -28,7 +27,6 @@ function Item({
 }: {
   item: IAcesso;
   getAcessos: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,7 +57,6 @@ function Item({
                               props: {
                                 setToken,
                                 setUsuario,
-                                expotoken,
                               },
                             })
                             .then(async (response) => {
@@ -146,7 +143,6 @@ function Item({
 const renderItem = ({
   item,
   getAcessos,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -154,7 +150,6 @@ const renderItem = ({
 }: {
   item: IAcesso;
   getAcessos: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -163,7 +158,6 @@ const renderItem = ({
   <Item
     item={item}
     getAcessos={getAcessos}
-    expotoken={expotoken}
     setToken={setToken}
     setUsuario={setUsuario}
     setLoading={setLoading}
@@ -174,7 +168,7 @@ const renderItem = ({
 export default function GerenciarAcessos() {
   const navigation = useNavigation<NavigationProp<OpcoesRoutesList>>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, acessos, getAcessos } = useContext(DadosContext);
+  const { acessos, getAcessos } = useContext(DadosContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function atualizar() {
@@ -206,7 +200,6 @@ export default function GerenciarAcessos() {
           renderItem({
             item,
             getAcessos: atualizar,
-            expotoken,
             setToken,
             setUsuario,
             setLoading,

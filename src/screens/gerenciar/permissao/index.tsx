@@ -9,26 +9,17 @@ import {
 } from "react-native";
 import Card from "../../../components/card";
 import { IAcesso, IUsuario } from "../../../types/interfaces";
-import services from "../../../services";
 import { AuthContext } from "../../../contexts/auth";
-import { showMessage } from "react-native-flash-message";
-import { Ionicons } from "@expo/vector-icons";
 import { DadosContext } from "../../../contexts/dados";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { OpcoesRoutesList } from "../../../routes/opcoes.routes";
 
 function Item({
   item,
-  getAcessos,
-  expotoken,
-  setToken,
-  setUsuario,
-  setLoading,
   navigation,
 }: {
   item: IAcesso;
   getAcessos: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -91,7 +82,6 @@ function Item({
 const renderItem = ({
   item,
   getAcessos,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -99,7 +89,6 @@ const renderItem = ({
 }: {
   item: IAcesso;
   getAcessos: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -108,7 +97,6 @@ const renderItem = ({
   <Item
     item={item}
     getAcessos={getAcessos}
-    expotoken={expotoken}
     setToken={setToken}
     setUsuario={setUsuario}
     setLoading={setLoading}
@@ -119,7 +107,7 @@ const renderItem = ({
 export default function GerenciarPermissoes() {
   const navigation = useNavigation<NavigationProp<OpcoesRoutesList>>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, acessos, getAcessos } = useContext(DadosContext);
+  const { acessos, getAcessos } = useContext(DadosContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function atualizar() {
@@ -150,7 +138,6 @@ export default function GerenciarPermissoes() {
         renderItem({
           item,
           getAcessos: atualizar,
-          expotoken,
           setToken,
           setUsuario,
           setLoading,

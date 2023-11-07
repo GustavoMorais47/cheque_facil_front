@@ -22,7 +22,7 @@ export default function GerenciarContasBancariasCriarEditar() {
   const { params } =
     useRoute<RouteProp<OpcoesRoutesList, "GerenciarContasBancariasAddEdit">>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { bancos, expotoken, getContasBancarias } = useContext(DadosContext);
+  const { bancos, getContasBancarias } = useContext(DadosContext);
 
   const [agencia, setAgencia] = useState<string>("");
   const [conta, setConta] = useState<string>("");
@@ -79,7 +79,6 @@ export default function GerenciarContasBancariasCriarEditar() {
           numero: conta,
         },
         props: {
-          expotoken,
           setToken,
           setUsuario,
         },
@@ -164,7 +163,6 @@ export default function GerenciarContasBancariasCriarEditar() {
             status,
           },
           props: {
-            expotoken,
             setToken,
             setUsuario,
           },

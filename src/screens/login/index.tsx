@@ -21,7 +21,6 @@ import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { PublicoRoutesList } from "../../routes/publico.routes";
 import Button from "../../components/button";
 import mascaraCPF from "../../utils/mascaraCPF";
-import useExpoToken from "../../hooks/useExpoToken";
 import { IUsuario } from "../../types/interfaces";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import * as Network from "expo-network";
@@ -31,18 +30,10 @@ export default function Login() {
   const { setToken, setUsuario } = useContext(AuthContext);
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
-  const [expoPushToken, setExpoPushToken] = useState<string | undefined>();
   const [mostarSenha, setMostrarSenha] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyboard, setKeyboard] = useState(false);
   const [conn, setConn] = useState(false);
-
-  const setExpoToken = async () => {
-    const expoToken = await useExpoToken();
-    if (expoToken) {
-      setExpoPushToken(expoToken.data);
-    }
-  };
 
   const checkLogin = async () => {
     setLoading(true);
@@ -52,7 +43,7 @@ export default function Login() {
       await services
         .get({
           route: "/ping-auth",
-          props: { setToken, setUsuario, expotoken: expoPushToken },
+          props: { setToken, setUsuario},
         })
         .then(() => {
           setToken(token);
@@ -97,14 +88,14 @@ export default function Login() {
     }
     setLoading(true);
     await services
-      .login(cpf, senha, desconectar, expoPushToken)
+      .login(cpf, senha, desconectar,)
       .then(async ({ token, mensagem }) => {
         await AsyncStorage.setItem("token", token);
         setToken(token);
 
         const usuario = await services.get<IUsuario>({
           route: "/me",
-          props: { setToken, setUsuario, expotoken: expoPushToken },
+          props: { setToken, setUsuario},
         });
 
         await AsyncStorage.setItem("usuario", JSON.stringify(usuario));
@@ -117,7 +108,6 @@ export default function Login() {
         });
       })
       .catch(async (error) => {
-        console.log(error);
         if (error === "Usuário já está logado") {
           Alert.alert(
             "Atenção!",
@@ -154,8 +144,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    setExpoToken();
-
+    checkLogin();
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       () => {
@@ -173,7 +162,7 @@ export default function Login() {
       await services
         .get({
           route: "/",
-          props: { setToken, setUsuario, expotoken: expoPushToken },
+          props: { setToken, setUsuario,},
         })
         .then(() => {
           setConn(true);
@@ -190,9 +179,6 @@ export default function Login() {
     };
   }, []);
 
-  useEffect(() => {
-    expoPushToken && checkLogin();
-  }, [expoPushToken]);
   return (
     <SafeAreaView
       style={{

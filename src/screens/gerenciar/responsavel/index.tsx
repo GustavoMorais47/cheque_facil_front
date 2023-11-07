@@ -20,7 +20,6 @@ import { OpcoesRoutesList } from "../../../routes/opcoes.routes";
 function Item({
   item,
   getResponsaveis,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -28,7 +27,6 @@ function Item({
 }: {
   item: IAcesso;
   getResponsaveis: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,7 +57,6 @@ function Item({
                               props: {
                                 setToken,
                                 setUsuario,
-                                expotoken,
                               },
                             })
                             .then(async (response) => {
@@ -146,7 +143,6 @@ function Item({
 const renderItem = ({
   item,
   getResponsaveis,
-  expotoken,
   setToken,
   setUsuario,
   setLoading,
@@ -154,7 +150,6 @@ const renderItem = ({
 }: {
   item: IAcesso;
   getResponsaveis: () => Promise<void>;
-  expotoken?: string;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -163,7 +158,6 @@ const renderItem = ({
   <Item
     item={item}
     getResponsaveis={getResponsaveis}
-    expotoken={expotoken}
     setToken={setToken}
     setUsuario={setUsuario}
     setLoading={setLoading}
@@ -174,7 +168,7 @@ const renderItem = ({
 export default function GerenciarResponsaveis() {
   const navigation = useNavigation<NavigationProp<OpcoesRoutesList>>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, responsaveis, getResponsaveis } = useContext(DadosContext);
+  const { responsaveis, getResponsaveis } = useContext(DadosContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function atualizar() {
@@ -206,7 +200,6 @@ export default function GerenciarResponsaveis() {
           renderItem({
             item,
             getResponsaveis: atualizar,
-            expotoken,
             setToken,
             setUsuario,
             setLoading,

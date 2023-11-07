@@ -22,7 +22,7 @@ export default function GerenciarPermissoesCriarEditar() {
   const { params } =
     useRoute<RouteProp<OpcoesRoutesList, "GerenciarPermissoesAddEdit">>();
   const { setToken, setUsuario } = useContext(AuthContext);
-  const { expotoken, getAcessos } = useContext(DadosContext);
+  const { getAcessos } = useContext(DadosContext);
 
   const [nome, setNome] = useState<string>(params.acesso.nome);
   const [email, setEmail] = useState<string>(params.acesso.email);
@@ -106,17 +106,6 @@ export default function GerenciarPermissoesCriarEditar() {
   ];
 
   async function atualizar() {
-    if (!expotoken) {
-      showMessage({
-        type: "warning",
-        icon: "warning",
-        message: "Atenção",
-        description:
-          "Não foi possível identificar o token do dispositivo. Aguade alguns segundos e tente novamente",
-      });
-      return;
-    }
-
     setLoading(true);
     await services
       .put<
@@ -131,7 +120,6 @@ export default function GerenciarPermissoesCriarEditar() {
           permissoes: permissoesAcesso,
         },
         props: {
-          expotoken,
           setToken,
           setUsuario,
         },

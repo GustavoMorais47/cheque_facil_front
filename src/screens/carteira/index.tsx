@@ -27,7 +27,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
 import Card from "../../components/card";
 import {
-  EOperacaoCheque,
   EPermissaoAcesso,
   EStatusCheque,
 } from "../../types/enum";
@@ -44,7 +43,6 @@ function Item({
   navigation,
   setToken,
   setUsuario,
-  expotoken,
   getCheques,
 }: {
   item: ICheque;
@@ -54,7 +52,6 @@ function Item({
   navigation: NavigationProp<CarteiraRoutesList>;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
-  expotoken?: string;
   getCheques: () => Promise<void>;
 }) {
   return (
@@ -103,7 +100,6 @@ function Item({
                               props: {
                                 setToken,
                                 setUsuario,
-                                expotoken,
                               },
                             })
                             .then(async (response) => {
@@ -263,7 +259,6 @@ function renderItem({
   navigation,
   setToken,
   setUsuario,
-  expotoken,
   getCheques,
 }: {
   item: ICheque;
@@ -273,7 +268,6 @@ function renderItem({
   navigation: NavigationProp<CarteiraRoutesList>;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
-  expotoken?: string;
   getCheques: () => Promise<void>;
 }) {
   return (
@@ -285,7 +279,6 @@ function renderItem({
       navigation={navigation}
       setToken={setToken}
       setUsuario={setUsuario}
-      expotoken={expotoken}
       getCheques={getCheques}
     />
   );
@@ -296,7 +289,6 @@ export default function Carteira() {
   const { params } = useRoute<RouteProp<CarteiraRoutesList, "CarteiraLista">>();
   const { setToken, setUsuario, usuario } = useContext(AuthContext);
   const {
-    expotoken,
     cheques,
     getCheques,
     responsaveis,
@@ -436,7 +428,6 @@ export default function Carteira() {
             navigation,
             setToken,
             setUsuario,
-            expotoken,
             getCheques,
           })
         }

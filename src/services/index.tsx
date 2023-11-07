@@ -12,7 +12,6 @@ const server = axios.create({
 interface IDefaultProps {
   setToken: (token: string | null) => void;
   setUsuario: React.Dispatch<React.SetStateAction<IUsuario | null>>;
-  expotoken: string | undefined;
 }
 
 async function statusDeAutenticacao({
@@ -67,7 +66,6 @@ async function login(
   cpf: string,
   senha: string,
   deslogar: boolean,
-  expotoken: string | undefined
 ) {
   return new Promise<{ mensagem: string; token: string }>(
     async (resolve, reject) => {
@@ -75,11 +73,6 @@ async function login(
         .post(
           "/login",
           { cpf, senha, deslogar },
-          {
-            headers: {
-              expotoken,
-            },
-          }
         )
         .then((response) => {
           resolve(response.data);
@@ -94,18 +87,12 @@ async function registro(
   cpf: string,
   email: string,
   senha: string,
-  expotoken: string | undefined
 ) {
   return new Promise<string>(async (resolve, reject) => {
     await server
       .post(
         "/registro",
         { nome, cpf, email, senha },
-        {
-          headers: {
-            expotoken,
-          },
-        }
       )
       .then((response) => {
         resolve(response.data.mensagem);
@@ -137,7 +124,6 @@ async function get<T, P = any>({
       .get(route, {
         headers: {
           Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-          expotoken: props.expotoken,
         },
         params,
       })
@@ -162,7 +148,6 @@ async function post<T, D>({
       .post("/" + route, data, {
         headers: {
           Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-          expotoken: props.expotoken,
         },
       })
       .then((response) => {
@@ -194,7 +179,6 @@ async function put<T, D>({
       .put("/" + route + id, data, {
         headers: {
           Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-          expotoken: props.expotoken,
         },
       })
       .then((response) => {
@@ -218,7 +202,6 @@ async function del<T>({
       .delete("/" + route + id, {
         headers: {
           Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-          expotoken: props.expotoken,
         },
       })
       .then((response) => {
