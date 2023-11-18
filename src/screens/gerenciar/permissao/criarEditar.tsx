@@ -318,7 +318,6 @@ export default function GerenciarPermissoesCriarEditar() {
       <View style={{ gap: 10 }}>
         <Button loading={loading} titulo={"Salvar"} onPress={atualizar} />
         <Button
-          loading={loading}
           titulo={"Cancelar"}
           onPress={navigation.goBack}
           type="secondary"

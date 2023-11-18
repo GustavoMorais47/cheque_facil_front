@@ -17,7 +17,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { OpcoesRoutesList } from "../../routes/opcoes.routes";
 import permissao from "../../utils/permissao";
-import useExpoToken from "../../hooks/useExpoToken";
 import services from "../../services";
 import moment from "moment";
 import pkg from "../../../package.json";
@@ -183,16 +182,6 @@ export default function Opcoes() {
               gap: 10,
             }}
           >
-            {/* <View
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 50,
-                overflow: "hidden",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            ></View> */}
             <View
               style={{
                 gap: 3,

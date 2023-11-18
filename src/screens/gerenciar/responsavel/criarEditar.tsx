@@ -211,7 +211,6 @@ export default function GerenciarResponsaveisCriarEditar() {
           onPress={params.responsavel ? atualizar : cadastrar}
         />
         <Button
-          loading={loading}
           titulo={params.responsavel ? "Cancelar" : "Voltar"}
           onPress={navigation.goBack}
           type="secondary"

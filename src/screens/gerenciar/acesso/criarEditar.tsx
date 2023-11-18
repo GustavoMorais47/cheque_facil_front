@@ -312,7 +312,6 @@ export default function GerenciarAcessosCriarEditar() {
           onPress={params.acesso ? atualizar : cadastrar}
         />
         <Button
-          loading={loading}
           titulo={params.acesso ? "Cancelar" : "Voltar"}
           onPress={navigation.goBack}
           type="secondary"

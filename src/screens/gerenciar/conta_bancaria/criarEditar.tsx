@@ -278,7 +278,6 @@ export default function GerenciarContasBancariasCriarEditar() {
           onPress={params.conta ? atualizar : cadastrar}
         />
         <Button
-          loading={loading}
           titulo={params.conta ? "Cancelar" : "Voltar"}
           onPress={navigation.goBack}
           type="secondary"
