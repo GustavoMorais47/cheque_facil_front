@@ -1,3 +1,4 @@
+import React from "react";
 import { TouchableOpacity, View, Text, ColorValue } from "react-native";
 
 export interface IOpcao {
@@ -8,11 +9,12 @@ export interface IOpcao {
 interface Props {
   opcoes: IOpcao[];
   selecionado: number | null;
-  setSelecionado: (index: number, value: number | string) => void;
+  setSelecionado: (index: number | null) => void;
   titulo?: string;
   subTitulo?: string;
   backgroundColor?: ColorValue;
   disabled?: boolean;
+  desmarcar?: boolean;
 }
 
 export default function Switch({
@@ -23,6 +25,7 @@ export default function Switch({
   subTitulo,
   backgroundColor,
   disabled = false,
+  desmarcar = false,
 }: Props) {
   return (
     <View
@@ -71,7 +74,9 @@ export default function Switch({
             return (
               <TouchableOpacity
                 key={index}
-                disabled={disabled ? disabled : selecionado === index}
+                disabled={
+                  disabled ? disabled : !desmarcar && selecionado === index
+                }
                 style={{
                   flex: 1,
                   backgroundColor:
@@ -83,7 +88,13 @@ export default function Switch({
                   justifyContent: "center",
                   minWidth: "25%",
                 }}
-                onPress={() => setSelecionado(index, opcao.value)}
+                onPress={() => {
+                  if (desmarcar && selecionado === index) {
+                    setSelecionado(null);
+                  } else {
+                    setSelecionado(index);
+                  }
+                }}
               >
                 <Text
                   numberOfLines={2}
