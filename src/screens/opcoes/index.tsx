@@ -25,6 +25,7 @@ import "moment/locale/pt-br";
 moment.locale("pt-br");
 
 interface IListPermissao {
+  titulo: string;
   permissao: EPermissaoAcesso;
   descricao: string;
   tela: keyof OpcoesRoutesList;
@@ -32,31 +33,37 @@ interface IListPermissao {
 
 const listPermissao: IListPermissao[] = [
   {
+    titulo: "acessos",
     permissao: EPermissaoAcesso.GERENCIAR_ACESSOS,
     descricao: "Gerencie os acessos da sua conta",
     tela: "GerenciarAcessos",
   },
   {
+    titulo: "Bancos",
     permissao: EPermissaoAcesso.GERENCIAR_BANCOS,
     descricao: "Gerencie os bancos da sua conta",
     tela: "GerenciarBancos",
   },
   {
+    titulo: "Contas bancárias",
     permissao: EPermissaoAcesso.GERENCIAR_CONTAS_BANCARIAS,
     descricao: "Gerencie as contas bancárias da sua conta",
     tela: "GerenciarContasBancarias",
   },
   {
+    titulo: "responsáveis",
     permissao: EPermissaoAcesso.GERENCIAR_RESPONSAVEIS,
     descricao: "Gerencie os responsáveis pelos cheques da sua conta",
     tela: "GerenciarResponsaveis",
   },
   {
+    titulo: "permissões",
     permissao: EPermissaoAcesso.GERENCIAR_PERMISSOES,
     descricao: "Gerencie as permissões dos acessos",
     tela: "GerenciarPermissoes",
   },
   // {
+  //   titulo: "datas bloqueadas",
   //   permissao: EPermissaoAcesso.GERENCIAR_DATAS_BLOQUEADAS,
   //   descricao:
   //     "Gerencie as datas bloqueadas para emissão e vencimento de cheques",
@@ -100,7 +107,7 @@ function PermissoesButton({
             textTransform: "capitalize",
           }}
         >
-          {titulo.replace("GERENCIAR_", "").replace("_", " ")}
+          {titulo}
         </Text>
         <Text
           style={{
@@ -251,7 +258,7 @@ export default function Opcoes() {
                     ) && (
                       <PermissoesButton
                         key={index}
-                        titulo={item.permissao}
+                        titulo={item.titulo}
                         descricao={item.descricao}
                         navigation={navigation}
                         tela={item.tela}
