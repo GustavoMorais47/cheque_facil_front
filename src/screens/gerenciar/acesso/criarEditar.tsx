@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/native";
 import { OpcoesRoutesList } from "../../../routes/opcoes.routes";
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, Alert } from "react-native";
 import Card from "../../../components/card";
 import Button from "../../../components/button";
 import { DadosContext } from "../../../contexts/dados";
@@ -17,6 +17,8 @@ import mascaraCPF from "../../../utils/mascaraCPF";
 import { showMessage } from "react-native-flash-message";
 import services from "../../../services";
 import { AuthContext } from "../../../contexts/auth";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Switch from "../../../components/switch";
 
 export default function GerenciarAcessosCriarEditar() {
   const navigation = useNavigation<NavigationProp<OpcoesRoutesList>>();
@@ -27,18 +29,13 @@ export default function GerenciarAcessosCriarEditar() {
 
   const [nome, setNome] = useState<string>("");
   const [cpf, setCpf] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
   const [responsavel, setResponsavel] = useState<IResponsavel | undefined>();
   const [status, setStatus] = useState<boolean>(true);
 
   const [loading, setLoading] = useState<boolean>(false);
 
   async function cadastrar() {
-    if (
-      nome.trim().length < 3 ||
-      cpf.trim().length < 11 ||
-      email.trim().length < 3
-    ) {
+    if (nome.trim().length < 3 || cpf.trim().length < 11) {
       showMessage({
         type: "warning",
         icon: "warning",
@@ -58,16 +55,6 @@ export default function GerenciarAcessosCriarEditar() {
       return;
     }
 
-    if (!email.includes("@") || !email.includes(".")) {
-      showMessage({
-        type: "warning",
-        icon: "warning",
-        message: "Atenção",
-        description: "Informe um e-mail válido",
-      });
-      return;
-    }
-
     setLoading(true);
     await services
       .post<
@@ -75,7 +62,6 @@ export default function GerenciarAcessosCriarEditar() {
         {
           nome: string;
           cpf: string;
-          email: string;
           id_responsavel?: number;
         }
       >({
@@ -83,7 +69,6 @@ export default function GerenciarAcessosCriarEditar() {
         data: {
           nome,
           cpf,
-          email,
           id_responsavel: responsavel ? responsavel.id : undefined,
         },
         props: {
@@ -100,7 +85,6 @@ export default function GerenciarAcessosCriarEditar() {
         });
         setNome("");
         setCpf("");
-        setEmail("");
         setStatus(true);
         setResponsavel(undefined);
         await getAcessos().finally(() => {
@@ -121,26 +105,12 @@ export default function GerenciarAcessosCriarEditar() {
   }
 
   async function atualizar() {
-    if (
-      nome.trim().length < 3 ||
-      cpf.trim().length < 11 ||
-      email.trim().length < 3
-    ) {
+    if (nome.trim().length < 3 || cpf.trim().length < 11) {
       showMessage({
         type: "warning",
         icon: "warning",
         message: "Atenção",
         description: "Preencha todos os campos para continuar",
-      });
-      return;
-    }
-
-    if (!email.includes("@") || !email.includes(".")) {
-      showMessage({
-        type: "warning",
-        icon: "warning",
-        message: "Atenção",
-        description: "Informe um e-mail válido",
       });
       return;
     }
@@ -152,7 +122,6 @@ export default function GerenciarAcessosCriarEditar() {
           { mensagem: string },
           {
             nome: string;
-            email: string;
             status: boolean;
             id_responsavel?: number;
           }
@@ -161,7 +130,6 @@ export default function GerenciarAcessosCriarEditar() {
           id: params.acesso.id,
           data: {
             nome,
-            email,
             status,
             id_responsavel: responsavel ? responsavel.id : undefined,
           },
@@ -195,15 +163,56 @@ export default function GerenciarAcessosCriarEditar() {
   }
 
   useEffect(() => {
-    params.acesso && navigation.setOptions({ title: "Editar Acesso" });
-    params.acesso && setNome(params.acesso.nome);
-    params.acesso && setCpf(params.acesso.cpf);
-    params.acesso && setEmail(params.acesso.email);
-    params.acesso && setStatus(params.acesso.status);
-    params.acesso &&
+    if (params.acesso) {
+      navigation.setOptions({
+        title: "Editar Acesso",
+        headerRight: () => (
+          <TouchableOpacity
+            disabled={loading}
+            onPress={() =>
+              Alert.alert(
+                "Atenção",
+                "Você deseja resetar a senha do usuário?",
+                [
+                  {
+                    text: "Não",
+                    style: "default",
+                  },
+                  {
+                    text: "Sim",
+                    onPress: async () => {
+                      Alert.alert(
+                        "Atenção",
+                        `A senha do usuário ${
+                          params.acesso!.nome
+                        } foi resetada com sucesso! A nova senha é os primeiros 9 dígitos do CPF do usuário.`
+                      );
+                    },
+                  },
+                ],
+                { cancelable: false }
+              )
+            }
+            style={{
+              padding: 5,
+              paddingRight: 0,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="lock-reset"
+              size={24}
+              color="#399b53"
+            />
+          </TouchableOpacity>
+        ),
+      });
+      setNome(params.acesso.nome);
+      setCpf(params.acesso.cpf);
+      setStatus(params.acesso.status);
       setResponsavel(
         responsaveis.filter((r) => r.id === params.acesso?.id_responsavel)[0]
       );
+    }
   }, []);
   return (
     <ScrollView
@@ -226,14 +235,6 @@ export default function GerenciarAcessosCriarEditar() {
             onChangeText={(text) => setCpf(text.replace(/[^0-9]/g, ""))}
             placeholder="Informe o CPF do usuário"
             keyboardType="numeric"
-          />
-          <Input
-            disabled={loading}
-            title="E-mail"
-            text={email}
-            onChangeText={setEmail}
-            placeholder="Informe o e-mail do usuário"
-            keyboardType="email-address"
           />
           {!params.acesso && (
             <Text
@@ -265,46 +266,23 @@ export default function GerenciarAcessosCriarEditar() {
           )}
         </View>
       </Card>
-      <Card titulo="Responsável" subTitulo="Vincule um responsável ao acesso">
-        {responsaveis.length === 0 ? (
-          <Text>Nenhum responsável cadastrado</Text>
-        ) : (
-          <View
-            style={{
-              flexWrap: "wrap",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            {responsaveis.map((resp) => (
-              <TouchableOpacity
-                key={resp.id}
-                onPress={() =>
-                  responsavel?.id !== resp.id
-                    ? setResponsavel(resp)
-                    : setResponsavel(undefined)
-                }
-                style={{
-                  padding: 10,
-                  backgroundColor:
-                    resp.id === responsavel?.id ? "#399b53" : "#f5f5f5",
-                  borderRadius: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    color: resp.id === responsavel?.id ? "white" : "black",
-                    fontWeight: resp.id === responsavel?.id ? "bold" : "normal",
-                  }}
-                >
-                  {resp.nome}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      </Card>
+      <Switch
+        titulo="Responsável"
+        subTitulo="Vincule um responsável ao acesso"
+        disabled={loading}
+        desmarcar
+        opcoes={responsaveis.map((r) => ({ label: r.nome, value: r.id }))}
+        selecionado={responsaveis.findIndex((r) => r.id === responsavel?.id)}
+        setSelecionado={(index) => {
+          if (index !== null) {
+            setResponsavel(responsaveis[index]);
+            !params.acesso && setNome(responsaveis[index].nome);
+          } else {
+            setResponsavel(undefined);
+            !params.acesso && setNome("");
+          }
+        }}
+      />
       <View style={{ gap: 10 }}>
         <Button
           loading={loading}

@@ -45,8 +45,12 @@ function Item({
                 onPress: () => {
                   Alert.alert(
                     "Atenção",
-                    "Tem certeza que deseja excluir este acesso?",
+                    "Tem certeza que deseja excluir este acesso? Essa ação não poderá ser desfeita.",
                     [
+                      {
+                        text: "Não",
+                        style: "default",
+                      },
                       {
                         text: "Sim",
                         onPress: async () => {
@@ -82,10 +86,6 @@ function Item({
                         },
                         style: "destructive",
                       },
-                      {
-                        text: "Cancelar",
-                        style: "cancel",
-                      },
                     ],
                     {
                       cancelable: false,
@@ -95,20 +95,13 @@ function Item({
                 style: "destructive",
               },
               {
-                text: "Cancelar",
-                style: "cancel",
-              },
-              {
                 text: "Editar",
                 onPress: () =>
                   navigation.navigate("GerenciarAcessosAddEdit", {
                     acesso: item,
                   }),
               },
-            ],
-            {
-              cancelable: false,
-            }
+            ]
           );
         }}
         style={{

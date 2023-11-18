@@ -15,7 +15,7 @@ export interface IAcesso {
   id_responsavel: number | null;
   nome: string;
   cpf: string;
-  email: string;
+  email?: string;
   status: boolean;
   permissoes: EPermissaoAcesso[];
   criado_por: number | null;
