@@ -19,7 +19,7 @@ export default function Button({
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={onPress}
-      disabled={disabled !== undefined ? disabled : loading}
+      disabled={disabled ? disabled : loading}
       style={{
         flex: 1,
         backgroundColor: type === "primary" ? "#399b53" : undefined,
