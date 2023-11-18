@@ -22,7 +22,6 @@ import { PublicoRoutesList } from "../../routes/publico.routes";
 import Button from "../../components/button";
 import mascaraCPF from "../../utils/mascaraCPF";
 import { IUsuario } from "../../types/interfaces";
-import { EXPO_PUBLIC_API_URL } from "@env";
 import * as Network from "expo-network";
 
 export default function Login() {
@@ -43,7 +42,7 @@ export default function Login() {
       await services
         .get({
           route: "/ping-auth",
-          props: { setToken, setUsuario},
+          props: { setToken, setUsuario },
         })
         .then(() => {
           setToken(token);
@@ -88,14 +87,14 @@ export default function Login() {
     }
     setLoading(true);
     await services
-      .login(cpf, senha, desconectar,)
+      .login(cpf, senha, desconectar)
       .then(async ({ token, mensagem }) => {
         await AsyncStorage.setItem("token", token);
         setToken(token);
 
         const usuario = await services.get<IUsuario>({
           route: "/me",
-          props: { setToken, setUsuario},
+          props: { setToken, setUsuario },
         });
 
         await AsyncStorage.setItem("usuario", JSON.stringify(usuario));
@@ -162,7 +161,7 @@ export default function Login() {
       await services
         .get({
           route: "/",
-          props: { setToken, setUsuario,},
+          props: { setToken, setUsuario },
         })
         .then(() => {
           setConn(true);
@@ -337,9 +336,8 @@ export default function Login() {
                     (await Network.getNetworkStateAsync()).isConnected
                       ? "Conectado"
                       : "Desconectado"
-                  })\nServidor: ${EXPO_PUBLIC_API_URL} (${
-                    conn ? "Online" : "Offline"
-                  })
+                  })\nServidor: ${process.env.EXPO_PUBLIC_API_URL}
+
                   `
                 );
               }}
@@ -371,6 +369,15 @@ export default function Login() {
                   {pkg.author.name}
                 </Text>
               </Text>
+              {!conn&&(<Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 12,
+                  fontWeight: "300",
+                }}
+              >
+                Sem conexão com o servidor
+              </Text>)}
             </TouchableOpacity>
           )}
         </ScrollView>

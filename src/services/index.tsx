@@ -3,10 +3,9 @@ import axios from "axios";
 import { EPermissaoAcesso } from "../types/enum";
 import { IUsuario } from "../types/interfaces";
 import React from "react";
-import { EXPO_PUBLIC_API_URL } from "@env";
 
 const server = axios.create({
-  baseURL: EXPO_PUBLIC_API_URL,
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
 
 interface IDefaultProps {

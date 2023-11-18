@@ -13,8 +13,7 @@
       [
         "expo-updates",
         {
-          "username": "gustavomorais",
-          "channel": "producao"
+          "username": "gustavomorais"
         }
       ],
       [
@@ -26,23 +25,22 @@
         }
       ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "8dd6a07c-8d85-4b36-a059-c61b5c3c8adc"
-      }
-    },
-    "android": {
-      "package": "com.gustavomorais.cheque_facil"
-    },
-    "ios": {
-      "bundleIdentifier": "com.gustavomorais.chequefacil"
-    },
     "runtimeVersion": {
       "policy": "appVersion"
     },
+    "extra": {
+      "eas": {
+        "projectId": "4f5aefc9-bff7-49a5-a2e7-63ca9df9e707"
+      }
+    },
+    "owner": "gustavomorais",
+    "android": {
+      "package": "com.gustavomorais.cheque_facil"
+    },
     "updates": {
-      "url": "https://u.expo.dev/8dd6a07c-8d85-4b36-a059-c61b5c3c8adc"
-    }
+      "url": "https://u.expo.dev/4f5aefc9-bff7-49a5-a2e7-63ca9df9e707"
+    },
+    "ios": {}
   },
   "splash": {
     "image": "./assets/splash.png",

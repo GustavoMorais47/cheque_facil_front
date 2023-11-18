@@ -3,20 +3,16 @@
     "version": ">= 5.4.0"
   },
   "build": {
-    "desenvolvimento": {
-      "channel": "desenvolvimento",
-      "developmentClient": true,
-      "distribution": "internal"
-    },
     "preview": {
       "channel": "preview",
-      "android": {
-        "buildType": "apk"
-      }
+      "distribution": "internal"
     },
-    "producao-leonardo": {
-      "channel": "producao-leonardo",
+    "production": {
+      "channel": "production",
       "node": "18.18.0",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://186.192.104.153:8084"
+      },
       "android": {
         "buildType": "apk"
       }

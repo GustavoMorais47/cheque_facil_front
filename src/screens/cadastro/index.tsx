@@ -17,11 +17,9 @@ import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { PublicoRoutesList } from "../../routes/publico.routes";
 import { showMessage } from "react-native-flash-message";
 import services from "../../services";
-import useExpoToken from "../../hooks/useExpoToken";
 
 export default function Cadastro() {
   const navigation = useNavigation<NavigationProp<PublicoRoutesList>>();
-  const [expoPushToken, setExpoPushToken] = useState<string | undefined>();
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
@@ -30,10 +28,6 @@ export default function Cadastro() {
   const [mostarSenha, setMostrarSenha] = useState(false);
   const [mostarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const setExpoToken = async () => {
-    setExpoPushToken(await useExpoToken());
-  };
 
   const cadastrar = async () => {
     if (nome.trim().length < 3) {
@@ -93,19 +87,10 @@ export default function Cadastro() {
       });
       return;
     }
-    if (!expoPushToken) {
-      await setExpoToken();
-      return showMessage({
-        type: "warning",
-        icon: "warning",
-        message: "Atenção!",
-        description: "Tentando novamente!",
-      });
-    }
 
     setLoading(true);
     await services
-      .registro(nome, cpf, email, senha, expoPushToken)
+      .registro(nome, cpf, email, senha)
       .then((res) => {
         showMessage({
           type: "success",
@@ -127,10 +112,6 @@ export default function Cadastro() {
         setLoading(false);
       });
   };
-
-  useEffect(() => {
-    setExpoToken();
-  }, []);
 
   return (
     <SafeAreaView
